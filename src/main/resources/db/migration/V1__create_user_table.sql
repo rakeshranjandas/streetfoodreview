@@ -1,0 +1,1 @@
+CREATE TABLE `streetfoodreview`.`user` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL , `email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL , PRIMARY KEY (`id`), UNIQUE (`email`)) ENGINE = InnoDB;
