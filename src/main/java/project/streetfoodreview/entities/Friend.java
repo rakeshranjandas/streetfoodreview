@@ -14,11 +14,11 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Follow {
+public class Friend {
 
     @Id
     @Column(name = "user_id")
     private Long id;
-    @Column(name = "follower_user_id")
-    private Long followerId;
+    @Column(name = "friend_user_id")
+    private Long friendId;
 }
