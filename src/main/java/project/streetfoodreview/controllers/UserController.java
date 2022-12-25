@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
 import project.streetfoodreview.entities.User;
@@ -18,7 +19,8 @@ import java.util.List;
 @RequestMapping("/v1/user")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+
     @GetMapping("/{id}")
     public User getUserDataFromId(@PathVariable final long id) throws Exception {
         return userService.getUserDataFromId(id);
@@ -32,5 +34,11 @@ public class UserController {
     @GetMapping("/{id}/friends")
     public List<User> getFriendList(@PathVariable("id") final long userId) {
         return userService.getFriendList(userId);
+    }
+
+    @PostMapping("/{id1}/friend/{id2}")
+    public void updateFriendship(@PathVariable("id1") final long self, @PathVariable("id2") final long other,
+                                 @RequestParam String type) {
+        userService.updateFriendship(self, other, type);
     }
 }

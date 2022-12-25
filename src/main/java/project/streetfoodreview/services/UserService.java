@@ -5,10 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.streetfoodreview.config.LoggedInUserConfig;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
+import project.streetfoodreview.entities.Friend;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
+import project.streetfoodreview.enums.FriendshipType;
+import project.streetfoodreview.repository.FriendRepository;
 import project.streetfoodreview.repository.ReviewRepository;
 import project.streetfoodreview.repository.UserRepository;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -18,6 +23,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final FriendRepository friendRepository;
     private final LoggedInUserConfig config;
 
 
@@ -41,5 +47,32 @@ public class UserService {
 
     public List<User> getFriendList(long userId) {
         return userRepository.getFriendList(userId);
+    }
+
+    @Transactional
+    public void updateFriendship(long self, long other, String type) {
+        FriendshipType friendshipType;
+        try {
+             friendshipType = FriendshipType.valueOf(type.toUpperCase());
+        } catch (Exception e) {
+            log.error("Invalid friendship updation type");
+            throw e;
+        }
+
+        switch (friendshipType) {
+            case FOLLOW:
+                log.info("Connecting user {} with user {}", self, other);
+                friendRepository.save(Friend.builder()
+                        .userId(self)
+                        .friendId(other)
+                        .build());
+                break;
+
+            case UNFOLLOW:
+                log.info("Detaching user {} from user {}", self, other);
+                long recordsDeleted = friendRepository.deleteByUserIdAndFriendId(self, other);
+                log.info("{} records were deleted", recordsDeleted);
+                break;
+        }
     }
 }
