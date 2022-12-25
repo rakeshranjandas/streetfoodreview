@@ -1,4 +1,4 @@
-package project.streetfoodreview.entities;
+package project.streetfoodreview.controllers.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,21 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import project.streetfoodreview.enums.Rating;
 
-import javax.persistence.*;
-
 @Data
-@Builder
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Builder
+public class PostReviewRequest {
     private String description;
     private Rating rating;
-    @Column(name="user_id")
-    private Long userId;
-    @Column(name="shop_id")
     private Long shopId;
 }
