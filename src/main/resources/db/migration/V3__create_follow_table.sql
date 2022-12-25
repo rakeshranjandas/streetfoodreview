@@ -1,0 +1,1 @@
+CREATE TABLE `streetfoodreview`.`follow` ( `user_id` INT NOT NULL , `follower_user_id` INT NOT NULL ) ENGINE = InnoDB;

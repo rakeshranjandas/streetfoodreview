@@ -1,0 +1,1 @@
+CREATE TABLE `streetfoodreview`.`shop` ( `id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(500) NOT NULL , `location` VARCHAR(500) NOT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
