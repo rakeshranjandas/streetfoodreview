@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.streetfoodreview.controllers.request.PostShopRequest;
+import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.Shop;
 import project.streetfoodreview.services.ShopService;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -23,4 +26,10 @@ public class ShopController {
     public void postReview(@RequestBody final PostShopRequest request) {
         shopService.addShop(request);
     }
+
+    @GetMapping("/{id}/reviews")
+    public List<Review> getShopReviews(@PathVariable final long id) {
+        return shopService.getShopReviews(id);
+    }
+
 }
