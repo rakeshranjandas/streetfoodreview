@@ -9,7 +9,7 @@ import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
 import project.streetfoodreview.repository.ReviewRepository;
 import project.streetfoodreview.repository.UserRepository;
-
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -37,5 +37,9 @@ public class UserService {
                                     .userId(Long.parseLong(config.getCurrentLoggedInUser()))
                                     .shopId(request.getShopId())
                                     .build());
+    }
+
+    public List<User> getFriendList(long userId) {
+        return userRepository.getFriendList(userId);
     }
 }
