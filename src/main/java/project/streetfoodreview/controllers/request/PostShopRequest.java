@@ -9,8 +9,7 @@ import project.streetfoodreview.enums.Rating;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostReviewRequest {
-    private String description;
-    private Rating rating;
-    private Long shopId;
+public class PostShopRequest {
+    private String name;
+    private String location;
 }
