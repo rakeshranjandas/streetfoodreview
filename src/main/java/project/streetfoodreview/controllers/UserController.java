@@ -1,9 +1,11 @@
 package project.streetfoodreview.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,7 @@ import project.streetfoodreview.services.UserService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/user")
@@ -36,7 +39,7 @@ public class UserController {
         return userService.getFriendList(userId);
     }
 
-    @PostMapping("/{id1}/friend/{id2}")
+    @PutMapping("/{id1}/friend/{id2}")
     public void updateFriendship(@PathVariable("id1") final long self, @PathVariable("id2") final long other,
                                  @RequestParam String type) {
         userService.updateFriendship(self, other, type);
