@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
+import project.streetfoodreview.dto.UserReviewDto;
 import project.streetfoodreview.entities.User;
 import project.streetfoodreview.services.UserService;
 
@@ -43,5 +44,10 @@ public class UserController {
     public void updateFriendship(@PathVariable("id1") final long self, @PathVariable("id2") final long other,
                                  @RequestParam String type) {
         userService.updateFriendship(self, other, type);
+    }
+
+    @GetMapping("/{id}/reviews")
+    public List<UserReviewDto> getReviews(@PathVariable final long id) {
+        return userService.getReviews(id);
     }
 }

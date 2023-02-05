@@ -1,14 +1,17 @@
-package project.streetfoodreview.controllers.request;
+package project.streetfoodreview.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostReviewRequest {
+@Builder
+public class UserReviewDto {
     private String description;
     private String rating;
     private Long shopId;
+    private String shopName;
 }

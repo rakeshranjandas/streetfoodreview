@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import project.streetfoodreview.enums.Rating;
 
 import javax.persistence.*;
 
@@ -18,7 +17,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
-    private Rating rating;
+    private String rating;
     @Column(name="user_id")
     private Long userId;
     @Column(name="shop_id")

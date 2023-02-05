@@ -1,10 +1,14 @@
 package project.streetfoodreview.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.streetfoodreview.config.LoggedInUserConfig;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
+import project.streetfoodreview.dto.UserReviewDto;
 import project.streetfoodreview.entities.Friend;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
@@ -12,9 +16,6 @@ import project.streetfoodreview.enums.FriendshipType;
 import project.streetfoodreview.repository.FriendRepository;
 import project.streetfoodreview.repository.ReviewRepository;
 import project.streetfoodreview.repository.UserRepository;
-
-import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -74,5 +75,22 @@ public class UserService {
                 log.info("{} records were deleted", recordsDeleted);
                 break;
         }
+    }
+
+    public List<UserReviewDto> getReviews(final long id) {
+        List<String> reviews = userRepository.getReviews(id);
+        List<UserReviewDto> result = new ArrayList<>();
+
+        for (String review : reviews) {
+            String[] strs = review.trim().split(",");
+            result.add(UserReviewDto.builder()
+                    .description(strs[0])
+                    .rating(strs[1])
+                    .shopId(Long.parseLong(strs[2].trim()))
+                    .shopName(strs[3])
+                    .build());
+        }
+
+        return result;
     }
 }
