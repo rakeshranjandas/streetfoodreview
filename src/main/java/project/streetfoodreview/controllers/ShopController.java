@@ -22,9 +22,16 @@ public class ShopController {
         return shopService.getShopDataFromId(id);
     }
 
+    @CrossOrigin
+    @GetMapping
+    public List<Shop> getAllShops() {
+        return shopService.getAllShops();
+    }
+
+    @CrossOrigin
     @PostMapping
-    public void postReview(@RequestBody final PostShopRequest request) {
-        shopService.addShop(request);
+    public Shop addShop(@RequestBody final PostShopRequest request) {
+        return shopService.addShop(request);
     }
 
     @GetMapping("/{id}/reviews")

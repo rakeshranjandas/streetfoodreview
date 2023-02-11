@@ -27,8 +27,12 @@ public class ShopService {
                 });
     }
 
-    public void addShop(PostShopRequest request) {
-        shopRepository.save(Shop.builder()
+    public List<Shop> getAllShops() {
+        return shopRepository.findAll();
+    }
+
+    public Shop addShop(PostShopRequest request) {
+        return shopRepository.save(Shop.builder()
                 .name(request.getName())
                 .location(request.getLocation())
                 .build());
