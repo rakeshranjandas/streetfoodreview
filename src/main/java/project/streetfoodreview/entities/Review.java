@@ -22,4 +22,15 @@ public class Review {
     private Long userId;
     @Column(name="shop_id")
     private Long shopId;
+
+    @ManyToOne(
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(
+            name = "shop_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false
+    )
+    private Shop shop;
 }
