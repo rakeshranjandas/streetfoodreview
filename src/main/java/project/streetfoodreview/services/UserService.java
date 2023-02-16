@@ -76,20 +76,8 @@ public class UserService {
         }
     }
 
-    public List<UserReviewDto> getReviews(final long id) {
-        List<String> reviews = userRepository.getReviews(id);
-        List<UserReviewDto> result = new ArrayList<>();
-
-        for (String review : reviews) {
-            String[] strs = review.trim().split(",");
-            result.add(UserReviewDto.builder()
-                    .description(strs[0])
-                    .rating(strs[1])
-                    .shopId(Long.parseLong(strs[2].trim()))
-                    .shopName(strs[3])
-                    .build());
-        }
-
-        return result;
+    public List<Review> getReviews(final long id) {
+        var allReviewsOfUser = userRepository.findById(id);
+        return allReviewsOfUser.get().getReviews();
     }
 }
