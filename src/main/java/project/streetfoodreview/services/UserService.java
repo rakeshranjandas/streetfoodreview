@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import project.streetfoodreview.config.LoggedInUserConfig;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
-import project.streetfoodreview.dto.UserReviewDto;
 import project.streetfoodreview.entities.Friend;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
