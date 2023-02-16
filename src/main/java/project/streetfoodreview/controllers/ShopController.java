@@ -10,6 +10,7 @@ import project.streetfoodreview.services.ShopService;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/v1/shop")
@@ -22,13 +23,11 @@ public class ShopController {
         return shopService.getShopDataFromId(id);
     }
 
-    @CrossOrigin
     @GetMapping
     public List<Shop> getAllShops() {
         return shopService.getAllShops();
     }
 
-    @CrossOrigin
     @PostMapping
     public Shop addShop(@RequestBody final PostShopRequest request) {
         return shopService.addShop(request);
