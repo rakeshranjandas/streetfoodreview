@@ -14,6 +14,7 @@ import project.streetfoodreview.entities.User;
 import project.streetfoodreview.enums.FriendshipType;
 import project.streetfoodreview.repository.FriendRepository;
 import project.streetfoodreview.repository.ReviewRepository;
+import project.streetfoodreview.repository.ShopRepository;
 import project.streetfoodreview.repository.UserRepository;
 
 @Service
@@ -24,6 +25,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
     private final FriendRepository friendRepository;
+    private final ShopRepository shopRepository;
+
     private final LoggedInUserConfig config;
 
 
@@ -36,13 +39,17 @@ public class UserService {
                          });
     }
 
-    public void postReview(PostReviewRequest request) {
-        reviewRepository.save(Review.builder()
+    public Review postReview(PostReviewRequest request) {
+        var reviewSaved =  reviewRepository.save(Review.builder()
                                     .description(request.getDescription())
                                     .rating(request.getRating())
                                     .userId(Long.parseLong(config.getCurrentLoggedInUser()))
                                     .shopId(request.getShopId())
                                     .build());
+
+        reviewSaved.setShop(shopRepository.findById(request.getShopId()).get());
+
+        return reviewSaved;
     }
 
     public List<User> getFriendList(long userId) {

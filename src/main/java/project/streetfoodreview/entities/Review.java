@@ -24,6 +24,7 @@ public class Review {
     private Long shopId;
 
     @ManyToOne(
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
     @JoinColumn(

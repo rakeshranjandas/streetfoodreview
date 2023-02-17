@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/review")
-    public void postReview(@RequestBody final PostReviewRequest request) {
-        userService.postReview(request);
+    public Review postReview(@RequestBody final PostReviewRequest request) {
+        return userService.postReview(request);
     }
 
     @GetMapping("/{id}/friends")
