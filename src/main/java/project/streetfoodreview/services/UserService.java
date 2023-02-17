@@ -40,12 +40,18 @@ public class UserService {
     }
 
     public Review postReview(PostReviewRequest request) {
-        var reviewSaved =  reviewRepository.save(Review.builder()
-                                    .description(request.getDescription())
-                                    .rating(request.getRating())
-                                    .userId(Long.parseLong(config.getCurrentLoggedInUser()))
-                                    .shopId(request.getShopId())
-                                    .build());
+
+        var reviewBuilder = Review.builder()
+            .description(request.getDescription())
+            .rating(request.getRating())
+            .userId(Long.parseLong(config.getCurrentLoggedInUser()))
+            .shopId(request.getShopId());
+
+        if (request.getId() != null) {
+            reviewBuilder.id(request.getId());
+        }
+
+        var reviewSaved =  reviewRepository.save(reviewBuilder.build());
 
         reviewSaved.setShop(shopRepository.findById(request.getShopId()).get());
 

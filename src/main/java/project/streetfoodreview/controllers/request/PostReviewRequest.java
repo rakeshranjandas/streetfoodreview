@@ -11,4 +11,5 @@ public class PostReviewRequest {
     private String description;
     private String rating;
     private Long shopId;
+    private Long id;
 }
