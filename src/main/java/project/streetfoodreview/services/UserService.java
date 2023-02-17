@@ -1,6 +1,7 @@
 package project.streetfoodreview.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -91,6 +92,9 @@ public class UserService {
 
     public List<Review> getReviews(final long id) {
         var allReviewsOfUser = userRepository.findById(id);
-        return allReviewsOfUser.get().getReviews();
+        var reviewsList = allReviewsOfUser.get().getReviews();
+        Collections.sort(reviewsList, (a, b) -> Long.compare(b.getId(), a.getId()));
+
+        return reviewsList;
     }
 }
