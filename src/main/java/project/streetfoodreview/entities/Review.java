@@ -1,5 +1,7 @@
 package project.streetfoodreview.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +25,7 @@ public class Review {
     @Column(name="shop_id")
     private Long shopId;
 
+    @JsonIgnoreProperties("reviews")
     @ManyToOne(
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
