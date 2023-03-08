@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import project.streetfoodreview.entities.User;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -13,5 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "where f.user_id=?1", nativeQuery = true)
     List<User> getFriendList(Long userId);
 
-    List<User> findByName(String username);
+    Optional<User> findByName(String username);
+
+    List<User> findAllByName(String username);
 }
