@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query (value = "select u.* from friend f inner join user u on u.id = f.friend_user_id " +
             "where f.user_id=?1", nativeQuery = true)
     List<User> getFriendList(Long userId);
+
+    List<User> findByName(String username);
 }
