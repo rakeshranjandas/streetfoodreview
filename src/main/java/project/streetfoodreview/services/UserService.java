@@ -16,6 +16,7 @@ import project.streetfoodreview.controllers.response.UserIdentityResponse;
 import project.streetfoodreview.entities.Friend;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
+import project.streetfoodreview.entities.UserLogin;
 import project.streetfoodreview.enums.FriendshipType;
 import project.streetfoodreview.repository.FriendRepository;
 import project.streetfoodreview.repository.ReviewRepository;
@@ -38,12 +39,17 @@ public class UserService {
         if (userId > 0)
             return userId;
 
+        return getPrincipalId();
+    }
+
+    private long getPrincipalId() throws Exception {
+
         SecurityContext securityContext = SecurityContextHolder.getContext();
 
         if (securityContext.getAuthentication() == null)
-            throw new UserPrincipalNotFoundException("user " + userId + " not found.");
+            throw new UserPrincipalNotFoundException("Prinicipal not found.");
 
-        var principal = (User) securityContext.getAuthentication().getPrincipal();
+        var principal = (UserLogin) securityContext.getAuthentication().getPrincipal();
 
         return principal.getId();
     }
@@ -61,12 +67,12 @@ public class UserService {
         return userIdentity;
     }
 
-    public Review postReview(PostReviewRequest request) {
+    public Review postReview(PostReviewRequest request) throws Exception {
 
         var reviewBuilder = Review.builder()
             .description(request.getDescription())
             .rating(request.getRating())
-            .userId(Long.parseLong(config.getCurrentLoggedInUser()))
+            .userId(getPrincipalId())
             .shopId(request.getShopId());
 
         if (request.getId() != null) {
@@ -80,7 +86,10 @@ public class UserService {
         return reviewSaved;
     }
 
-    public List<User> getFriendList(long userId) {
+    public List<User> getFriendList(long userId) throws Exception  {
+
+        userId = setReferenceUserId(userId);
+
         return userRepository.getFriendList(userId);
     }
 
@@ -111,7 +120,10 @@ public class UserService {
         }
     }
 
-    public List<Review> getReviews(final long id) {
+    public List<Review> getReviews(long id) throws Exception {
+
+        id = setReferenceUserId(id);
+
         var allReviewsOfUser = userRepository.findById(id);
         var reviewsList = allReviewsOfUser.get().getReviews();
         Collections.sort(reviewsList, (a, b) -> Long.compare(b.getId(), a.getId()));

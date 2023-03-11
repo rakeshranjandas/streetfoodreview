@@ -32,12 +32,12 @@ public class UserController {
     }
 
     @PostMapping("/review")
-    public Review postReview(@RequestBody final PostReviewRequest request) {
+    public Review postReview(@RequestBody final PostReviewRequest request) throws Exception {
         return userService.postReview(request);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getFriendList(@PathVariable("id") final long userId) {
+    public List<User> getFriendList(@PathVariable("id") final long userId) throws Exception {
         return userService.getFriendList(userId);
     }
 
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/reviews")
-    public List<Review> getReviews(@PathVariable final long id) {
+    public List<Review> getReviews(@PathVariable final long id) throws Exception {
         return userService.getReviews(id);
     }
 }
