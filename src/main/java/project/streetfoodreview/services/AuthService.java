@@ -11,8 +11,8 @@ import project.streetfoodreview.config.JwtService;
 import project.streetfoodreview.controllers.request.UserLoginRequest;
 import project.streetfoodreview.controllers.request.UserRegisterRequest;
 import project.streetfoodreview.controllers.response.AuthResponse;
-import project.streetfoodreview.entities.User;
-import project.streetfoodreview.repository.UserRepository;
+import project.streetfoodreview.entities.UserLogin;
+import project.streetfoodreview.repository.UserLoginRepository;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +20,7 @@ import project.streetfoodreview.repository.UserRepository;
 public class AuthService {
 
     @Autowired
-    UserRepository userRepository;
+    UserLoginRepository userLoginRepository;
 
     @Autowired
     private final JwtService jwtService;
@@ -32,7 +32,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse register(UserRegisterRequest request) {
-        var existingUsername = userRepository.findAllByName(request.getUsername());
+        var existingUsername = userLoginRepository.findAllByName(request.getUsername());
 
         if (existingUsername.size() > 0) {
             return AuthResponse.builder()
@@ -41,15 +41,15 @@ public class AuthService {
                     .build();
         }
 
-        var newUser = User.builder()
+        var newUserLogin = UserLogin.builder()
                 .name(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
 
-        userRepository.save(newUser);
+        userLoginRepository.save(newUserLogin);
 
-        var jwtToken = jwtService.generateToken(newUser);
+        var jwtToken = jwtService.generateToken(newUserLogin);
 
         return AuthResponse.builder().token(jwtToken).build();
     }
@@ -62,14 +62,11 @@ public class AuthService {
             )
         );
 
-        var users = userRepository.findAllByName(request.getUsername());
-        System.out.println(users);
-
+        var users = userLoginRepository.findAllByName(request.getUsername());
 
         if (users.size() == 0) {
             return AuthResponse.builder().error("bad login").build();
         }
-
 
         var user = users.get(0);
         var jwtToken = jwtService.generateToken(user);

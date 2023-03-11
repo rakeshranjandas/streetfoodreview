@@ -7,24 +7,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import project.streetfoodreview.repository.UserRepository;
+import project.streetfoodreview.repository.UserLoginRepository;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final UserLoginRepository userLoginRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByName(username)
+        return username -> userLoginRepository.findByName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
