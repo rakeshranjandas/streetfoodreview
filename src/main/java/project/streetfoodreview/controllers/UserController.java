@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
+import project.streetfoodreview.controllers.response.UserIdentityResponse;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
 import project.streetfoodreview.services.UserService;
@@ -26,7 +27,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public User getUserDataFromId(@PathVariable final long id) throws Exception {
+    public UserIdentityResponse getUserDataFromId(@PathVariable final long id) throws Exception {
         return userService.getUserDataFromId(id);
     }
 

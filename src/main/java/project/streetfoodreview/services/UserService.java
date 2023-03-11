@@ -1,14 +1,18 @@
 package project.streetfoodreview.services;
 
+import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import project.streetfoodreview.config.LoggedInUserConfig;
 import project.streetfoodreview.controllers.request.PostReviewRequest;
+import project.streetfoodreview.controllers.response.UserIdentityResponse;
 import project.streetfoodreview.entities.Friend;
 import project.streetfoodreview.entities.Review;
 import project.streetfoodreview.entities.User;
@@ -30,14 +34,31 @@ public class UserService {
 
     private final LoggedInUserConfig config;
 
+    private long setReferenceUserId(long userId) throws Exception{
+        if (userId > 0)
+            return userId;
 
-    public User getUserDataFromId(long id) throws Exception {
-        log.info("Current logged in user is {}", config.getCurrentLoggedInUser());
-        return userRepository.findById(id)
-                         .orElseThrow(() -> {
-                             log.error("User info not found for id {}", id);
-                             return new Exception("User not found");
-                         });
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+
+        if (securityContext.getAuthentication() == null)
+            throw new UserPrincipalNotFoundException("user " + userId + " not found.");
+
+        var principal = (User) securityContext.getAuthentication().getPrincipal();
+
+        return principal.getId();
+    }
+
+    public UserIdentityResponse getUserDataFromId(long id) throws Exception {
+
+        id = setReferenceUserId(id);
+
+        var userData= userRepository.findById(id).get();
+        var userIdentity = UserIdentityResponse.builder()
+                .name(userData.getName())
+                .email(userData.getEmail())
+                .build();
+
+        return userIdentity;
     }
 
     public Review postReview(PostReviewRequest request) {
