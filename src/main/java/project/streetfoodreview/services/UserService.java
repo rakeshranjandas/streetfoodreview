@@ -35,28 +35,11 @@ public class UserService {
 
     private final LoggedInUserConfig config;
 
-    private long setReferenceUserId(long userId) throws Exception{
-        if (userId > 0)
-            return userId;
-
-        return getPrincipalId();
-    }
-
-    private long getPrincipalId() throws Exception {
-
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-
-        if (securityContext.getAuthentication() == null)
-            throw new UserPrincipalNotFoundException("Prinicipal not found.");
-
-        var principal = (UserLogin) securityContext.getAuthentication().getPrincipal();
-
-        return principal.getId();
-    }
+    private final PrincipalService principalService;
 
     public UserIdentityResponse getUserDataFromId(long id) throws Exception {
 
-        id = setReferenceUserId(id);
+        id = principalService.setReferenceUserId(id);
 
         var userData= userRepository.findById(id).get();
         var userIdentity = UserIdentityResponse.builder()
@@ -72,7 +55,7 @@ public class UserService {
         var reviewBuilder = Review.builder()
             .description(request.getDescription())
             .rating(request.getRating())
-            .userId(getPrincipalId())
+            .userId(principalService.getPrincipalId())
             .shopId(request.getShopId());
 
         if (request.getId() != null) {
@@ -88,7 +71,7 @@ public class UserService {
 
     public List<User> getFriendList(long userId) throws Exception  {
 
-        userId = setReferenceUserId(userId);
+        userId = principalService.setReferenceUserId(userId);
 
         return userRepository.getFriendList(userId);
     }
@@ -122,7 +105,7 @@ public class UserService {
 
     public List<Review> getReviews(long id) throws Exception {
 
-        id = setReferenceUserId(id);
+        id = principalService.setReferenceUserId(id);
 
         var allReviewsOfUser = userRepository.findById(id);
         var reviewsList = allReviewsOfUser.get().getReviews();
