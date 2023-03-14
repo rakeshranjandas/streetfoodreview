@@ -23,10 +23,10 @@ public class Shop {
     private String name;
     private String location;
 
-    @JsonIgnoreProperties("shop")
-    @OneToMany(
-        fetch = FetchType.EAGER,
-        mappedBy = "shop"
-    )
-    private List<Review> reviews;
+//    @JsonIgnoreProperties("shop")
+//    @OneToMany(
+//        fetch = FetchType.EAGER,
+//        mappedBy = "shop"
+//    )
+//    private List<Review> reviews;
 }
